@@ -194,54 +194,55 @@ bool check_can_move(Game g, Direction d) {
 void load_piecetype(Game g, PieceType pt)
 {
     // Update data
+    Color c = pt;
     g->curr_piece_type = pt;
-    g->curr_piece_color = pt;   // This is an enum with the same fields and order
+    g->curr_piece_color = c;   // This is an enum with the same fields and order
 
     g->curr_piece_pos.y = 0;    // All spawn at max height
     g->curr_piece_pos.x = 3;    // Add have this as the same
 
     // Fill in the piece grid
     if (pt == TETROMINO_I) {
-        g->curr_piece_grid[1][0] = COLOR_LIGHTBLUE;
-        g->curr_piece_grid[1][1] = COLOR_LIGHTBLUE;
-        g->curr_piece_grid[1][2] = COLOR_LIGHTBLUE;
-        g->curr_piece_grid[1][3] = COLOR_LIGHTBLUE;
+        g->curr_piece_grid[1][0] = c;
+        g->curr_piece_grid[1][1] = c;
+        g->curr_piece_grid[1][2] = c;
+        g->curr_piece_grid[1][3] = c;
 
     } else if (pt == TETROMINO_J) {
-        g->curr_piece_grid[0][0] = COLOR_DARKBLUE;
-        g->curr_piece_grid[1][0] = COLOR_DARKBLUE;
-        g->curr_piece_grid[1][1] = COLOR_DARKBLUE;
-        g->curr_piece_grid[1][2] = COLOR_DARKBLUE;
+        g->curr_piece_grid[0][0] = c;
+        g->curr_piece_grid[1][0] = c;
+        g->curr_piece_grid[1][1] = c;
+        g->curr_piece_grid[1][2] = c;
 
     } else if (pt == TETROMINO_L) {
-        g->curr_piece_grid[0][3] = COLOR_ORANGE;
-        g->curr_piece_grid[1][0] = COLOR_ORANGE;
-        g->curr_piece_grid[1][1] = COLOR_ORANGE;
-        g->curr_piece_grid[1][2] = COLOR_ORANGE;
+        g->curr_piece_grid[0][3] = c;
+        g->curr_piece_grid[1][0] = c;
+        g->curr_piece_grid[1][1] = c;
+        g->curr_piece_grid[1][2] = c;
 
     } else if (pt == TETROMINO_O) {
-        g->curr_piece_grid[0][1] = COLOR_YELLOW;
-        g->curr_piece_grid[0][2] = COLOR_YELLOW;
-        g->curr_piece_grid[1][1] = COLOR_YELLOW;
-        g->curr_piece_grid[1][2] = COLOR_YELLOW;
+        g->curr_piece_grid[0][1] = c;
+        g->curr_piece_grid[0][2] = c;
+        g->curr_piece_grid[1][1] = c;
+        g->curr_piece_grid[1][2] = c;
 
     } else if (pt == TETROMINO_S) {
-        g->curr_piece_grid[0][1] = COLOR_GREEN;
-        g->curr_piece_grid[0][2] = COLOR_GREEN;
-        g->curr_piece_grid[1][0] = COLOR_GREEN;
-        g->curr_piece_grid[1][1] = COLOR_GREEN;
+        g->curr_piece_grid[0][1] = c;
+        g->curr_piece_grid[0][2] = c;
+        g->curr_piece_grid[1][0] = c;
+        g->curr_piece_grid[1][1] = c;
 
     } else if (pt == TETROMINO_Z) {
-        g->curr_piece_grid[0][0] = COLOR_RED;
-        g->curr_piece_grid[0][1] = COLOR_RED;
-        g->curr_piece_grid[1][1] = COLOR_RED;
-        g->curr_piece_grid[1][2] = COLOR_RED;
+        g->curr_piece_grid[0][0] = c;
+        g->curr_piece_grid[0][1] = c;
+        g->curr_piece_grid[1][1] = c;
+        g->curr_piece_grid[1][2] = c;
 
     } else if (pt == TETROMINO_T) {
-        g->curr_piece_grid[0][1] = COLOR_MAGENTA;
-        g->curr_piece_grid[1][0] = COLOR_MAGENTA;
-        g->curr_piece_grid[1][1] = COLOR_MAGENTA;
-        g->curr_piece_grid[1][2] = COLOR_MAGENTA;
+        g->curr_piece_grid[0][1] = c;
+        g->curr_piece_grid[1][0] = c;
+        g->curr_piece_grid[1][1] = c;
+        g->curr_piece_grid[1][2] = c;
 
     }
     g->currRotation = 0;

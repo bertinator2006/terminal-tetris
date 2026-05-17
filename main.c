@@ -1,50 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "game.h"
+#include "display.h"
 #include "generation.h"
 // https://www.google.com/search?q=tetris+wiki+for+implmentation&sca_esv=6ce64e4e4d3a8d9d&sxsrf=ANbL-n6OewMJEkXy7zbXKMoSmmnM5-UY1Q%3A1778760612837&ei=pLsFaqnUMqXI0-kPg_jD8AE&biw=1530&bih=768&ved=0ahUKEwiptt_T37iUAxUl5DQHHQP8EB4Q4dUDCBI&uact=5&oq=tetris+wiki+for+implmentation&gs_lp=Egxnd3Mtd2l6LXNlcnAiHXRldHJpcyB3aWtpIGZvciBpbXBsbWVudGF0aW9uMgcQIRgKGKABSKcdUIoEWNUccAF4AZABAJgB4gGgAYQZqgEGMC4xMy40uAEDyAEA-AEBmAISoAKxGcICChAAGEcY1gQYsAPCAg0QABiABBiKBRhDGLADwgIXEC4Y3AYYuAYY2gYY2AIYyAMYsAPYAQHCAhcQLhjYAhi4BhjaBhjcBhjIAxiwA9gBAcICBRAAGIAEwgIGEAAYFhgewgIIEAAYgAQYogTCAgUQABjvBcICCxAAGIAEGIoFGIYDwgIFECEYoAHCAgQQIRgVmAMAiAYBkAYUugYGCAEQARgZkgcGMS4xMi41oAeTM7IHBjAuMTIuNbgHqxnCBwYxMC43LjHIBxqACAE&sclient=gws-wiz-serp
 // https://tetris.wiki/images/6/67/TGM_Legend_Tetra_SRS.png
 
-#define GRID_HEIGHT 23
-#define VISIBLE_GRID_HEIGHT 20
-#define GRID_WIDTH 10
-#define MAX_PIECE_WIDTH 4
-#define MAX_PIECE_HEIGHT 4
-
-typedef enum
-{
-    COLOR_LIGHTBLUE,
-    COLOR_DARKBLUE,
-    COLOR_ORANGE,
-    COLOR_YELLOW,
-    COLOR_GREEN,
-    COLOR_RED,
-    COLOR_MAGENTA,
-    COLOR_NONE,
-} Color;
-
-typedef enum {
-    DIRECTION_RIGHT,
-    DIRECTION_LEFT,
-    DIRECTION_DOWN,
-    DIRECTION_UP,
-} Direction;
-
-typedef struct vector2d {
-    int x;
-    int y;
-} Vector2d;
-
-struct game {
-    Color grid[GRID_HEIGHT][GRID_WIDTH];
-    PieceType curr_piece_type;
-    Vector2d curr_piece_pos;
-    Color curr_piece_color;
-    Color curr_piece_grid[MAX_PIECE_HEIGHT][MAX_PIECE_WIDTH];
-    int currRotation;
-};
-
-typedef struct game *Game;
 
 // Initialiser
 Game create_game(void);
@@ -71,6 +33,8 @@ bool check_can_rotate(Game g);
 
 int main(void)
 {
+    Game game = create_game();
+
     return 0;
 }
 
@@ -95,6 +59,14 @@ Game create_game(void)
     
     return g;
 }
+
+void display_grid(Game g) {
+
+
+    return;
+    
+}
+
 
 // moves piece down by one is possible
 // otherwise sets the piece onto the grid
@@ -194,60 +166,34 @@ bool check_can_move(Game g, Direction d) {
 void load_piecetype(Game g, PieceType pt)
 {
     // Update data
+    // This is an enum with the same fields and order
     Color c = pt;
     g->curr_piece_type = pt;
-    g->curr_piece_color = c;   // This is an enum with the same fields and order
+    g->curr_piece_color = c;
+
+    uint16_t bmp = tetrominoes[pt][0];
+
+    for (int y = 0; y < MAX_PIECE_HEIGHT; y++)
+    {
+        for (int x = 0; x < MAX_PIECE_WIDTH; x++)
+        {
+            int i = y * MAX_PIECE_WIDTH + x;
+            // 0b1 << 1 == 0b10
+            if (bmp & (0x8000 >> i))
+            {
+                g->curr_piece_grid[y][x] = c;
+            }
+            else
+            {
+                g->curr_piece_grid[y][x] = COLOR_NONE;
+            }
+        }
+    }
 
     g->curr_piece_pos.y = 0;    // All spawn at max height
     g->curr_piece_pos.x = 3;    // Add have this as the same
 
-    // Fill in the piece grid
-    if (pt == TETROMINO_I) {
-        g->curr_piece_grid[1][0] = c;
-        g->curr_piece_grid[1][1] = c;
-        g->curr_piece_grid[1][2] = c;
-        g->curr_piece_grid[1][3] = c;
-
-    } else if (pt == TETROMINO_J) {
-        g->curr_piece_grid[0][0] = c;
-        g->curr_piece_grid[1][0] = c;
-        g->curr_piece_grid[1][1] = c;
-        g->curr_piece_grid[1][2] = c;
-
-    } else if (pt == TETROMINO_L) {
-        g->curr_piece_grid[0][3] = c;
-        g->curr_piece_grid[1][0] = c;
-        g->curr_piece_grid[1][1] = c;
-        g->curr_piece_grid[1][2] = c;
-
-    } else if (pt == TETROMINO_O) {
-        g->curr_piece_grid[0][1] = c;
-        g->curr_piece_grid[0][2] = c;
-        g->curr_piece_grid[1][1] = c;
-        g->curr_piece_grid[1][2] = c;
-
-    } else if (pt == TETROMINO_S) {
-        g->curr_piece_grid[0][1] = c;
-        g->curr_piece_grid[0][2] = c;
-        g->curr_piece_grid[1][0] = c;
-        g->curr_piece_grid[1][1] = c;
-
-    } else if (pt == TETROMINO_Z) {
-        g->curr_piece_grid[0][0] = c;
-        g->curr_piece_grid[0][1] = c;
-        g->curr_piece_grid[1][1] = c;
-        g->curr_piece_grid[1][2] = c;
-
-    } else if (pt == TETROMINO_T) {
-        g->curr_piece_grid[0][1] = c;
-        g->curr_piece_grid[1][0] = c;
-        g->curr_piece_grid[1][1] = c;
-        g->curr_piece_grid[1][2] = c;
-
-    }
     g->currRotation = 0;
-    
-
 
     return;
 }

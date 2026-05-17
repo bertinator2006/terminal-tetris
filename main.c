@@ -60,13 +60,6 @@ Game create_game(void)
     return g;
 }
 
-void display_grid(Game g) {
-
-
-    return;
-    
-}
-
 
 // moves piece down by one is possible
 // otherwise sets the piece onto the grid
@@ -96,8 +89,9 @@ int piece_fall(Game g) {
         }   
 
         return 1;
-    }     
-    return 0;
+    }
+    fprintf(stderr, "int piece_fall(g): How the fuck did you get here?\n");
+    exit(1);
 }
 
 void soft_drop_piece(Game g);

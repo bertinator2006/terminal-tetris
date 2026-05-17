@@ -13,7 +13,6 @@
 
 typedef enum
 {
-    COLOR_NONE,
     COLOR_LIGHTBLUE,
     COLOR_DARKBLUE,
     COLOR_ORANGE,
@@ -21,6 +20,7 @@ typedef enum
     COLOR_GREEN,
     COLOR_RED,
     COLOR_MAGENTA,
+    COLOR_NONE,
 } Color;
 
 typedef enum {
@@ -74,7 +74,6 @@ int main(void)
     return 0;
 }
 
-// TODO: implement this
 Game create_game(void)
 {
     Game g = malloc(sizeof(struct game));
@@ -83,6 +82,7 @@ Game create_game(void)
         fprintf(stderr, "failed to allocate memory in create_game()\n");
         exit(1);
     }
+
     for (int x = 0; x < GRID_WIDTH; x++)
     {
         for  (int y = 0; y < GRID_HEIGHT; y++)
@@ -104,7 +104,7 @@ int piece_fall(Game g) {
     // If we can move down, move down
     if (check_can_move(g, DIRECTION_DOWN)) {
         // Move down
-        g->curr_piece_pos.x = 0;
+        g->curr_piece_pos.y++;
         return 0;
     // We cannot move down, set it     
     } else {

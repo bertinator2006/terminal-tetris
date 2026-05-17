@@ -1,19 +1,7 @@
 #ifndef GENERATION_H
 #define GENERATION_H
 
-#define NUM_UNIQUE_PIECES 7
-
-typedef enum
-{
-    TETROMINO_NONE,
-    TETROMINO_I, 
-    TETROMINO_J, 
-    TETROMINO_L, 
-    TETROMINO_O, 
-    TETROMINO_S, 
-    TETROMINO_Z,
-    TETROMINO_T,
-} PieceType;
+#include "pieces.h"
 
 typedef struct generator *Generator;
 

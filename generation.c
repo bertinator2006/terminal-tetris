@@ -2,9 +2,10 @@
 #include <time.h>
 #include <stdlib.h>
 #include "generation.h"
+#include "pieces.h"
 
 struct generator {
-    PieceType queue[NUM_UNIQUE_PIECES];
+    PieceType queue[NUM_PIECES];
     int next_queue_index;
 };
 
@@ -22,9 +23,9 @@ Generator create_generator(void)
         seeded = true;
     }
     Generator gen = malloc(sizeof(struct generator));
-    for (int i = 0; i < NUM_UNIQUE_PIECES; i++)
+    for (int i = 0; i < NUM_PIECES; i++)
     {
-        gen->queue[i] = i + 1;
+        gen->queue[i] = i;
     }
     gen->next_queue_index = 0;
     shuffle_queue(gen);
@@ -34,7 +35,7 @@ Generator create_generator(void)
 PieceType gen_random_piecetype(Generator gen)
 {
     int i = gen->next_queue_index;
-    if (i == NUM_UNIQUE_PIECES)
+    if (i == NUM_PIECES)
     {
         shuffle_queue(gen);
         i = 0;
@@ -53,7 +54,7 @@ void destroy_generator(Generator gen)
 
 static void shuffle_queue(Generator gen)
 {
-    for (int i = NUM_UNIQUE_PIECES - 1; i > 0; i--)
+    for (int i = NUM_PIECES - 1; i > 0; i--)
     {
         int j = rand() % (i + 1);
 

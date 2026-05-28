@@ -11,6 +11,23 @@ int main(void)
 {
     Game game = create_game();
 
+    bool quit = false;
+    
+    while (!quit)
+    {
+        Command cmd = get_command();
+        switch (cmd)
+        {
+            case CMD_QUIT:      quit = true;        break;
+            case CMD_LEFT:      move_left(game);    break;
+            case CMD_RIGHT:     move_right(game);   break;
+            case CMD_ROTATE_L:  rotate_left(game);  break;
+            case CMD_ROTATE_R:  rotate_right(game); break;
+            case CMD_NONE:      piece_fall(game);   break;
+            default:            break;
+        }
+    }
+    
     return 0;
 }
 

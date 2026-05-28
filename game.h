@@ -33,6 +33,16 @@ typedef enum
     COLOR_NONE,
 } Color;
 
+typedef enum
+{
+    CMD_QUIT,
+    CMD_LEFT,
+    CMD_RIGHT,
+    CMD_ROTATE_L,
+    CMD_ROTATE_R,
+    CMD_NONE,
+} Command;
+
 struct game {
     Color grid[GRID_HEIGHT][GRID_WIDTH];
     PieceType curr_piece_type;

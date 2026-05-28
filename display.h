@@ -1,7 +1,4 @@
 #include "game.h"
 
-// Display and Inputg
+// Display and Input
 void display_grid(Game g);
-
-// Stub
-void print_block(Color c);

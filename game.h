@@ -44,4 +44,27 @@ struct game {
 
 typedef struct game *Game;
 
+// Initialiser
+Game create_game(void);
+void destroy_game(Game g);
+
+// Display and Inputg
+void display_grid(Game g);
+
+// Piece falling logic
+int piece_fall(Game g);
+void soft_drop_piece(Game g);
+void hard_drop_piece(Game g);
+
+// Movement logic
+void move_left(Game g);
+void move_right(Game g);
+void load_piecetype(Game g, PieceType pt);
+bool check_can_move(Game g, Direction d);
+
+// Rotation logic
+void rotate_left(Game g);
+void rotate_right(Game g);
+bool check_can_rotate(Game g);
+
 #endif

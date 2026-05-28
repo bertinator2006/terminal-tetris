@@ -3,33 +3,9 @@
 #include <stdbool.h>
 #include "game.h"
 #include "display.h"
-#include "generation.h"
-// https://www.google.com/search?q=tetris+wiki+for+implmentation&sca_esv=6ce64e4e4d3a8d9d&sxsrf=ANbL-n6OewMJEkXy7zbXKMoSmmnM5-UY1Q%3A1778760612837&ei=pLsFaqnUMqXI0-kPg_jD8AE&biw=1530&bih=768&ved=0ahUKEwiptt_T37iUAxUl5DQHHQP8EB4Q4dUDCBI&uact=5&oq=tetris+wiki+for+implmentation&gs_lp=Egxnd3Mtd2l6LXNlcnAiHXRldHJpcyB3aWtpIGZvciBpbXBsbWVudGF0aW9uMgcQIRgKGKABSKcdUIoEWNUccAF4AZABAJgB4gGgAYQZqgEGMC4xMy40uAEDyAEA-AEBmAISoAKxGcICChAAGEcY1gQYsAPCAg0QABiABBiKBRhDGLADwgIXEC4Y3AYYuAYY2gYY2AIYyAMYsAPYAQHCAhcQLhjYAhi4BhjaBhjcBhjIAxiwA9gBAcICBRAAGIAEwgIGEAAYFhgewgIIEAAYgAQYogTCAgUQABjvBcICCxAAGIAEGIoFGIYDwgIFECEYoAHCAgQQIRgVmAMAiAYBkAYUugYGCAEQARgZkgcGMS4xMi41oAeTM7IHBjAuMTIuNbgHqxnCBwYxMC43LjHIBxqACAE&sclient=gws-wiz-serp
+// https://tetris.wiki/Tetris_Guideline
 // https://tetris.wiki/images/6/67/TGM_Legend_Tetra_SRS.png
 
-
-// Initialiser
-Game create_game(void);
-void destroy_game(Game g);
-
-// Display and Inputg
-void display_grid(Game g);
-
-// Piece falling logic
-int piece_fall(Game g);
-void soft_drop_piece(Game g);
-void hard_drop_piece(Game g);
-
-// Movement logic
-void move_left(Game g);
-void move_right(Game g);
-void load_piecetype(Game g, PieceType pt);
-bool check_can_move(Game g, Direction d);
-
-// Rotation logic
-void rotate_left(Game g);
-void rotate_right(Game g);
-bool check_can_rotate(Game g);
 
 int main(void)
 {
@@ -38,6 +14,8 @@ int main(void)
     return 0;
 }
 
+// returns Game
+// initialises grid to 0 and curr_piece_type to NULL
 Game create_game(void)
 {
     Game g = malloc(sizeof(struct game));
@@ -55,11 +33,9 @@ Game create_game(void)
         }
     }
     g->curr_piece_type = TETROMINO_NONE;
-    g->currRotation = 0;
-    
+
     return g;
 }
-
 
 // moves piece down by one is possible
 // otherwise sets the piece onto the grid
@@ -71,7 +47,7 @@ int piece_fall(Game g) {
         // Move down
         g->curr_piece_pos.y++;
         return 0;
-    // We cannot move down, set it     
+    // We cannot move down, set it
     } else {
         // Loop through every piece
         for (int i = 0; i < MAX_PIECE_HEIGHT; i++) {
@@ -86,7 +62,7 @@ int piece_fall(Game g) {
 
                 g->grid[final_x][final_y] = g->curr_piece_color;
             }
-        }   
+        }
 
         return 1;
     }
@@ -109,20 +85,20 @@ void move_left(Game g)
 
 
 // TODO: implement this
-void move_right(Game g) 
+void move_right(Game g)
 {
     if (check_can_move(g, DIRECTION_RIGHT)) {
         g->curr_piece_pos.x++;
     }
-    
+
     return;
 }
 
 bool check_can_move(Game g, Direction d) {
     // represented as {dy, dx}
     int iter[4][2] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    
-    int dx = iter[d][1]; 
+
+    int dx = iter[d][1];
     int dy = iter[d][0];
 
     int new_piece_y = dy + g->curr_piece_pos.y;

@@ -2,3 +2,4 @@
 
 // Display and Input
 void display_grid(Game g);
+

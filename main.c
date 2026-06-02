@@ -3,13 +3,18 @@
 #include <stdbool.h>
 #include "game.h"
 #include "display.h"
+#include "generation.h"
 // https://tetris.wiki/Tetris_Guideline
 // https://tetris.wiki/images/6/67/TGM_Legend_Tetra_SRS.png
 
+Generator gen;
 
 int main(void)
 {
     Game game = create_game();
+    gen = create_generator();
+    PieceType piece_t = gen_random_piecetype(gen);
+    load_piecetype(game, piece_t);
 
     bool quit = false;
     
@@ -61,33 +66,33 @@ Game create_game(void)
 // otherwise sets the piece onto the grid
 // return 0 if piece moved down by one
 // return 1 if piece was set onto the grid
-int piece_fall(Game g) {
-    // If we can move down, move down
-    if (check_can_move(g, DIRECTION_DOWN)) {
-        // Move down
+int piece_fall(Game g)
+{
+    if (check_can_move(g, DIRECTION_DOWN))
+    {
         g->curr_piece_pos.y++;
         return 0;
-    // We cannot move down, set it
-    } else {
-        // Loop through every piece
-        for (int i = 0; i < MAX_PIECE_HEIGHT; i++) {
-            for (int j = 0 ; j < MAX_PIECE_WIDTH; j++) {
-                if (g->curr_piece_grid[i][j] == COLOR_NONE) {
-                    continue;
-                }
-
-                // Set the piece at this position into the grid
-                int final_x = g->curr_piece_pos.x + j;
-                int final_y = g->curr_piece_pos.y = i;
-
-                g->grid[final_x][final_y] = g->curr_piece_color;
-            }
-        }
-
-        return 1;
     }
-    fprintf(stderr, "int piece_fall(g): How the fuck did you get here?\n");
-    exit(1);
+
+    for (int i = 0; i < MAX_PIECE_HEIGHT; i++)
+    {
+        for (int j = 0; j < MAX_PIECE_WIDTH; j++)
+        {
+            if (g->curr_piece_grid[i][j] == COLOR_NONE)
+            {
+                continue;
+            }
+
+            int final_x = g->curr_piece_pos.x + j;
+            int final_y = g->curr_piece_pos.y + i;
+
+            g->grid[final_y][final_x] = g->curr_piece_color;
+        }
+    }
+    PieceType piece_t = gen_random_piecetype(gen);
+    load_piecetype(g, piece_t);
+
+    return 1;
 }
 
 void soft_drop(Game g);
@@ -134,12 +139,12 @@ bool check_can_move(Game g, Direction d) {
             int final_y = new_piece_y + i;
             if (final_x < 0 || final_x > GRID_WIDTH - 1) {
                 return false;
-            } else if (final_y < 0) {
+            } else if (final_y < 0 || final_y > GRID_HEIGHT - 1) {
                 return false;
             }
 
             // Check if the piece will collide into another piece
-            if (g->grid[final_x][final_y] != COLOR_NONE) {
+            if (g->grid[final_y][final_x] != COLOR_NONE) {
                 return false;
             }
 
@@ -152,21 +157,20 @@ bool check_can_move(Game g, Direction d) {
 // Loads piece into to current
 void load_piecetype(Game g, PieceType pt)
 {
-    // Update data
-    // This is an enum with the same fields and order
-    Color c = pt;
+    Color c = (Color)pt;
+
     g->curr_piece_type = pt;
     g->curr_piece_color = c;
 
     uint16_t bmp = tetrominoes[pt][0];
 
-    for (int y = 0; y < MAX_PIECE_HEIGHT; y++)
+    uint16_t mask = 0x8000;
+
+    for (int y = 0; y < 4; y++)
     {
-        for (int x = 0; x < MAX_PIECE_WIDTH; x++)
+        for (int x = 0; x < 4; x++)
         {
-            int i = y * MAX_PIECE_WIDTH + x;
-            // 0b1 << 1 == 0b10
-            if (bmp & (0x8000 >> i))
+            if (bmp & mask)
             {
                 g->curr_piece_grid[y][x] = c;
             }
@@ -174,15 +178,14 @@ void load_piecetype(Game g, PieceType pt)
             {
                 g->curr_piece_grid[y][x] = COLOR_NONE;
             }
+
+            mask >>= 1;
         }
     }
 
-    g->curr_piece_pos.y = 0;    // All spawn at max height
-    g->curr_piece_pos.x = 3;    // Add have this as the same
-
+    g->curr_piece_pos.y = 0;
+    g->curr_piece_pos.x = 3;
     g->currRotation = 0;
-
-    return;
 }
 
 void destroy_game(Game g)

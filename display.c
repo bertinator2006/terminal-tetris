@@ -41,8 +41,8 @@ void display_grid(Game g) {
         printf("||");
         for (int cCol = 0; cCol < GRID_WIDTH; cCol++) {
             // Check if the grid already has something
-            bool isFallingBlockRowRange = (fallingBlockRow <= cRow && cRow <= fallingBlockRow + MAX_PIECE_HEIGHT);
-            bool isFallingBlockColRange = (fallingBlockCol <= cCol && cCol <= fallingBlockCol + MAX_PIECE_WIDTH);
+            bool isFallingBlockRowRange = (fallingBlockRow <= cRow && cRow < fallingBlockRow + MAX_PIECE_HEIGHT);
+            bool isFallingBlockColRange = (fallingBlockCol <= cCol && cCol < fallingBlockCol + MAX_PIECE_WIDTH);
     
             if (g->grid[cRow][cCol] != COLOR_NONE) {
                 // Print it, and just that
@@ -54,6 +54,9 @@ void display_grid(Game g) {
                 // If there is something, print it
                 if (currPosCol != COLOR_NONE) {
                     print_block(currPosCol);
+                }
+                else {
+                    print_block(COLOR_NONE);
                 }
 
             } else {

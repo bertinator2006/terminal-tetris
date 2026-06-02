@@ -15,7 +15,9 @@ int main(void)
     
     while (!quit)
     {
+        display_grid(game);
         Command cmd = get_command();
+        int ret;
         switch (cmd)
         {
             case CMD_QUIT:      quit = true;        break;
@@ -196,6 +198,11 @@ void rotate_left(Game g)
 
 // TODO: implement this
 void rotate_right(Game g)
+{
+    return;
+}
+
+void hard_drop(Game g)
 {
     return;
 }

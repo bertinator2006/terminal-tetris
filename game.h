@@ -64,8 +64,8 @@ void display_grid(Game g);
 
 // Piece falling logic
 int piece_fall(Game g);
-void soft_drop_piece(Game g);
-void hard_drop_piece(Game g);
+void soft_drop(Game g);
+void hard_drop(Game g);
 
 // Movement logic
 void move_left(Game g);

@@ -1,8 +1,12 @@
 #include <stdbool.h>
+#include <stdio.h>
+#include <ctype.h>
 #include "game.h"
 #include "display.h"
 
-static void print_block(Color c)
+static void print_block(Color c);
+
+Command get_command(void)
 {
     char ch;
 

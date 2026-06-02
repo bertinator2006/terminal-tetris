@@ -2,7 +2,27 @@
 #include "game.h"
 #include "display.h"
 
-static void print_block(Color c);
+static void print_block(Color c)
+{
+    char ch;
+
+    if (scanf(" %c", &ch) != 1) {
+        return CMD_NONE;
+    }
+
+    ch = (char)tolower(ch);
+
+    switch (ch)
+    {
+        case 'q':    return CMD_QUIT;
+        case 'a':    return CMD_LEFT;
+        case 'd':    return CMD_RIGHT;
+        case 'z':    return CMD_ROTATE_L;
+        case 'x':    return CMD_ROTATE_R;
+        case ' ':    return CMD_HARD_DROP;
+        default:     return CMD_NONE;
+    }
+}
 
 void display_grid(Game g) {
     // Loop through the rows

@@ -40,6 +40,7 @@ typedef enum
     CMD_RIGHT,
     CMD_ROTATE_L,
     CMD_ROTATE_R,
+    CMD_HARD_DROP,
     CMD_NONE,
 } Command;
 

@@ -23,6 +23,7 @@ int main(void)
             case CMD_RIGHT:     move_right(game);   break;
             case CMD_ROTATE_L:  rotate_left(game);  break;
             case CMD_ROTATE_R:  rotate_right(game); break;
+            case CMD_HARD_DROP: hard_drop(game);    break;
             case CMD_NONE:      piece_fall(game);   break;
             default:            break;
         }
@@ -87,21 +88,18 @@ int piece_fall(Game g) {
     exit(1);
 }
 
-void soft_drop_piece(Game g);
-void hard_drop_piece(Game g);
+void soft_drop(Game g);
+void hard_drop(Game g);
 
-// TODO: implement this
 void move_left(Game g)
 {
-    if (check_can_move(g, DIRECTION_RIGHT)) {
+    if (check_can_move(g, DIRECTION_LEFT)) {
         g->curr_piece_pos.x--;
     }
 
     return;
 }
 
-
-// TODO: implement this
 void move_right(Game g)
 {
     if (check_can_move(g, DIRECTION_RIGHT)) {
@@ -185,15 +183,19 @@ void load_piecetype(Game g, PieceType pt)
     return;
 }
 
-
 void destroy_game(Game g)
 {
     free(g);
 }
-// TODO: implement this
-void rotate_left(Game g);
 
 // TODO: implement this
-void rotate_right(Game g);
+void rotate_left(Game g)
+{
+    return;
+}
 
-bool check_can_rotate(g);
+// TODO: implement this
+void rotate_right(Game g)
+{
+    return;
+}

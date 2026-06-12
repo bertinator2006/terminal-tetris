@@ -7,6 +7,9 @@
 // https://tetris.wiki/Tetris_Guideline
 // https://tetris.wiki/images/6/67/TGM_Legend_Tetra_SRS.png
 
+// Scoring Logic
+static void add_score(Game g, int num_rows_cleared);
+
 Generator gen;
 
 int main(void)
@@ -59,6 +62,9 @@ Game create_game(void)
     }
     g->curr_piece_type = TETROMINO_NONE;
 
+    g->rows_cleared = 0;
+    g->score = 0;
+
     return g;
 }
 
@@ -94,9 +100,6 @@ int piece_fall(Game g)
 
     return 1;
 }
-
-void soft_drop(Game g);
-void hard_drop(Game g);
 
 void move_left(Game g)
 {
@@ -193,6 +196,14 @@ void destroy_game(Game g)
     free(g);
 }
 
+// does not modify anything
+// returns true if the rotation can happen
+// returns false if rotation cannot happen
+static bool can_rotate(Game g, Rotation rotation)
+{
+    
+}
+
 // TODO: implement this
 void rotate_left(Game g)
 {
@@ -205,7 +216,63 @@ void rotate_right(Game g)
     return;
 }
 
+// Drops the thing as far down until it hits something
 void hard_drop(Game g)
+{
+    // Piece_fall returns 1 if it cannot drop anymore
+    while (piece_fall(g) != 1) {}
+    return;
+}
+
+// Clears fully finished rows, and drops things above the rows
+void clear_rows(Game g)
+{
+    bool mark_rows[20] = {true};
+
+    int currRow = GRID_HEIGHT;
+    int maxRow = GRID_HEIGHT - VISIBLE_GRID_HEIGHT;
+
+    int startRowToDel = -1;
+    int finRowToDel = -1;
+
+    // Mark which rows need to be deleted
+    for (int checkRow = currRow; checkRow >= maxRow; checkRow--) {
+        mark_rows[currRow] = true;
+        for (int i = 0 ; i < GRID_WIDTH; i++) {
+            if (g->grid[checkRow][i] == COLOR_NONE) {
+                mark_rows[currRow] = false;
+            }
+        }
+    }
+
+    // All good no rows to delete
+    if (startRowToDel == -1) {
+        return;
+    }
+
+    // Count how many rows we need to delete
+    int nRowsToDel = startRowToDel - finRowToDel;
+
+    // Wipe out the rows that we need to delete
+    for (int i = startRowToDel; i >= finRowToDel; i--) {
+        for (int j = 0; j < GRID_WIDTH; j++) {
+            g->grid[i][j] = COLOR_NONE;
+        }
+    }
+
+    // Push any blocks above down by an amount
+    for (int currRow = startRowToDel; currRow > 0; currRow--) {
+        for (int j = 0; j < GRID_WIDTH; j++) {
+            g->grid[currRow + nRowsToDel][j] = g->grid[currRow][j];
+        }
+    }
+
+    add_score(g, nRowsToDel);
+
+    return;
+}
+
+static void add_score(Game g, int num_rows_cleared) 
 {
     return;
 }

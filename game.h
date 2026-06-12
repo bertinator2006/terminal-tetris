@@ -44,6 +44,12 @@ typedef enum
     CMD_NONE,
 } Command;
 
+typedef enum
+{
+    ROTATION_LEFT,
+    ROTATION_RIGHT,
+} Rotation;
+
 struct game {
     Color grid[GRID_HEIGHT][GRID_WIDTH];
     PieceType curr_piece_type;
@@ -51,6 +57,10 @@ struct game {
     Color curr_piece_color;
     Color curr_piece_grid[MAX_PIECE_HEIGHT][MAX_PIECE_WIDTH];
     int currRotation;
+
+    // Scoring logic
+    int score;
+    int rows_cleared;
 };
 
 typedef struct game *Game;
@@ -66,6 +76,7 @@ void display_grid(Game g);
 int piece_fall(Game g);
 void soft_drop(Game g);
 void hard_drop(Game g);
+void clear_rows(Game g);
 
 // Movement logic
 void move_left(Game g);

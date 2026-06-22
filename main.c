@@ -20,7 +20,7 @@ int main(void)
     load_piecetype(game, piece_t);
 
     bool quit = false;
-    
+
     while (!quit)
     {
         display_grid(game);
@@ -38,7 +38,7 @@ int main(void)
             default:            break;
         }
     }
-    
+
     return 0;
 }
 
@@ -165,7 +165,7 @@ void load_piecetype(Game g, PieceType pt)
     g->curr_piece_type = pt;
     g->curr_piece_color = c;
 
-    uint16_t bmp = tetrominoes[pt][0];
+    uint16_t bitmap = tetrominoes[pt][0];
 
     uint16_t mask = 0x8000;
 
@@ -173,7 +173,7 @@ void load_piecetype(Game g, PieceType pt)
     {
         for (int x = 0; x < 4; x++)
         {
-            if (bmp & mask)
+            if (bitmap & mask)
             {
                 g->curr_piece_grid[y][x] = c;
             }
@@ -193,27 +193,57 @@ void load_piecetype(Game g, PieceType pt)
 
 void destroy_game(Game g)
 {
-    free(g);
-}
 
-// does not modify anything
-// returns true if the rotation can happen
-// returns false if rotation cannot happen
-static bool can_rotate(Game g, Rotation rotation)
-{
-    
+    free(g);
 }
 
 // TODO: implement this
 void rotate_left(Game g)
 {
+    // find what new_rotation show be i.e. 1, 2, 3, 0
+    // initialise array of wallkick offsets (first one is 0,0)
+    // for each offset, check the 4x4 grid placed at that offset + the corrent piece position works
+        // load that bitmap into a separate 4x4 grid
+        // if it works update the position, rotation, and the actual piece grid
+        // return
+    int new_rotation = (g->currRotation + 1) % 4;
+    Color c = (Color)g->curr_piece_color;
+
+    uint16_t bitmap = tetrominoes[g->curr_piece_type][new_rotation];
+    
+
     return;
 }
 
 // TODO: implement this
 void rotate_right(Game g)
 {
+    int new_rotation = (g->currRotation - 1) % 4;
+    Color c = (Color)g->curr_piece_color;
+
+    uint16_t bitmap = tetrominoes[g->curr_piece_type][new_rotation];
+
     return;
+}
+
+// This tests a new position to see if we can rotate there.
+static bool test_potential_position(Game g, int x_offset, int y_offset, uint16_t bitmap)
+{
+    int currTestPosX = g->curr_piece_pos.x + x_offset;
+    int currTestPosY = g->curr_piece_pos.y + y_offset;
+    int currBitPos = 15;
+    
+    for (int i = currTestPosX; i < 4; i++) {
+        for (int j = currTestPosY; j < 4; j++) {
+            // If there is something in where we want to go, we cant rotate there
+            int currBit = bitmap & (0b1 << currBitPos);
+            currBitPos--;
+            if (currBit == 1 && g->grid[i][j] != COLOR_NONE) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 // Drops the thing as far down until it hits something
@@ -227,13 +257,10 @@ void hard_drop(Game g)
 // Clears fully finished rows, and drops things above the rows
 void clear_rows(Game g)
 {
-    bool mark_rows[20] = {true};
+    bool mark_rows[GRID_HEIGHT] = {true};
 
     int currRow = GRID_HEIGHT;
     int maxRow = GRID_HEIGHT - VISIBLE_GRID_HEIGHT;
-
-    int startRowToDel = -1;
-    int finRowToDel = -1;
 
     // Mark which rows need to be deleted
     for (int checkRow = currRow; checkRow >= maxRow; checkRow--) {
@@ -245,33 +272,36 @@ void clear_rows(Game g)
         }
     }
 
-    // All good no rows to delete
-    if (startRowToDel == -1) {
-        return;
-    }
+    int shiftDown = 0;
+    // Start at the bottom, and see which rows we need to delete
+    for (int i = GRID_HEIGHT; i >= maxRow; i--) {
+        // We need to delete this row
+        if (mark_rows[i] == false) {
+            // Wipe it clean
+            for (int j = 0; j < GRID_WIDTH; j++) {
+                g->grid[i][j] = COLOR_NONE;
+            }
 
-    // Count how many rows we need to delete
-    int nRowsToDel = startRowToDel - finRowToDel;
+            // Mark the next rows to be shifted down
+            shiftDown++;
+            return;
 
-    // Wipe out the rows that we need to delete
-    for (int i = startRowToDel; i >= finRowToDel; i--) {
-        for (int j = 0; j < GRID_WIDTH; j++) {
-            g->grid[i][j] = COLOR_NONE;
+        // A row(s) below have been deleted: must shift this guy down.
+        } else if (shiftDown != 0) {
+            for (int j = 0; j < GRID_WIDTH; j++) {
+                g->grid[i + shiftDown][j] = g->grid[i][j];
+            }
+            
         }
     }
 
-    // Push any blocks above down by an amount
-    for (int currRow = startRowToDel; currRow > 0; currRow--) {
-        for (int j = 0; j < GRID_WIDTH; j++) {
-            g->grid[currRow + nRowsToDel][j] = g->grid[currRow][j];
-        }
-    }
-
-    add_score(g, nRowsToDel);
+    // Add points based on how many rows we shifted it down by
+    add_score(g, shiftDown);
 
     return;
 }
 
+// Adds score based on the amount of rows cleared 
 static void add_score(Game g, int num_rows_cleared) 
 {
     return;

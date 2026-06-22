@@ -51,9 +51,11 @@ typedef enum
 } Rotation;
 
 struct game {
+    // 0,0 is top left
     Color grid[GRID_HEIGHT][GRID_WIDTH];
     PieceType curr_piece_type;
-    Vector2d curr_piece_pos;
+    // This is the top left of the curr piece grid
+    Vector2d curr_piece_pos;    
     Color curr_piece_color;
     Color curr_piece_grid[MAX_PIECE_HEIGHT][MAX_PIECE_WIDTH];
     int currRotation;
@@ -87,6 +89,6 @@ bool check_can_move(Game g, Direction d);
 // Rotation logic
 void rotate_left(Game g);
 void rotate_right(Game g);
-bool check_can_rotate(Game g);
+static bool test_potential_position(Game g, int x_offset, int y_offset, uint16_t bitmap);
 
 #endif

@@ -22,3 +22,20 @@ const uint16_t tetrominoes[NUM_PIECES][4] = {
     // Shape T
     {0x2700, 0x2620, 0x0720, 0x2320}
 };
+
+typedef enum
+{
+    
+} RotationIndex;
+
+void load_offsets_x(int offsets_x[6], int offsets_y[6], int curr_rotation, int new_rotation, PieceType pt)
+{
+    offsets_x[0] = 0;
+    offsets_y[0] = 0;
+    // for rotation index to SRS system rotation conversion
+    // 0 == 0 || R == 1 || 2 == 2 || L == 3
+    if (pt == TETROMINO_I)
+    {
+        int x_offsets
+    }
+}

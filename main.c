@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "game.h"
+#include "pieces.h"
 #include "display.h"
 #include "generation.h"
 // https://tetris.wiki/Tetris_Guideline
@@ -197,6 +198,19 @@ void destroy_game(Game g)
     free(g);
 }
 
+static void rotate(Game g, Rotation r)
+{
+    int new_rotation;
+    if (r == ROTATION_LEFT)
+    {
+        new_rotation = (g->currRotation + 1) % 4;
+    }
+    else if (r == ROTATION_RIGHT)
+    {
+        new_rotation = (g->currRotation + 1) % 4;
+    }
+}
+
 // TODO: implement this
 void rotate_left(Game g)
 {
@@ -207,7 +221,10 @@ void rotate_left(Game g)
         // if it works update the position, rotation, and the actual piece grid
         // return
     int new_rotation = (g->currRotation + 1) % 4;
-    Color c = (Color)g->curr_piece_color;
+    int offsets_x[5];
+    int offsets_y[5];
+    load_offsets(offsets_x, offsets_y, g->currRotation, new_rotation, g->curr_piece_type);
+    Color c = g->curr_piece_color;
 
     uint16_t bitmap = tetrominoes[g->curr_piece_type][new_rotation];
     

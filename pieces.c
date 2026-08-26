@@ -1,5 +1,8 @@
 #include "pieces.h"
 
+static void load_offsets_x_I(int offsets_x[5], int offsets_y[5], int curr_rotation, int new_rotation);
+
+
 const uint16_t tetrominoes[NUM_PIECES][4] = {
     // Shape I
     {0x0f00, 0x4444, 0x00F0, 0x2222},
@@ -34,11 +37,44 @@ typedef enum
 
 void load_offsets_x(int offsets_x[5], int offsets_y[5], int curr_rotation, int new_rotation, PieceType pt)
 {
+    // https://tetris.wiki/Tetris_Guideline
     offsets_x[0] = 0;
     offsets_y[0] = 0;
     
+    // I piece has different offsets than the other pieces
     if (pt == TETROMINO_I)
     {
-        
+        load_offsets_x_I(offsets_x, offsets_y, curr_rotation, new_rotation);
+        return;
+    }
+
+    // all other pieces have the same offsets
+
+    
+}
+
+static void load_offsets_x_I(int offsets_x[5], int offsets_y[5], int curr_rotation, int new_rotation)
+{
+    if (curr_rotation == ROTATION_0 && new_rotation == ROTATION_1)
+    {
+        offsets_x[1] = -2;
+        offsets_y[1] = 0;
+        offsets_x[2] = 1;
+        offsets_y[2] = 0;
+        offsets_x[3] = -2;
+        offsets_y[3] = -1;
+        offsets_x[4] = 1;
+        offsets_y[4] = 2;
+    }
+    else if (curr_rotation == ROTATION_1 && new_rotation == ROTATION_0)
+    {
+        offsets_x[1] = 2;
+        offsets_y[1] = 0;
+        offsets_x[2] = -1;
+        offsets_y[2] = 0;
+        offsets_x[3] = 2;
+        offsets_y[3] = 1;
+        offsets_x[4] = -1;
+        offsets_y[4] = -2;
     }
 }

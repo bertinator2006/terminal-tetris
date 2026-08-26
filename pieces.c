@@ -25,14 +25,6 @@ const uint16_t tetrominoes[NUM_PIECES][4] = {
     {0x2700, 0x2620, 0x0720, 0x2320}
 };
 
-typedef enum
-{
-    ROTATION_0,
-    ROTATION_R,
-    ROTATION_2,
-    ROTATION_L
-} RotationIndex;
-
 typedef struct
 {
 	int x;

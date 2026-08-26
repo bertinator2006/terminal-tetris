@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include "generation.h"
@@ -23,6 +24,11 @@ Generator create_generator(void)
         seeded = true;
     }
     Generator gen = malloc(sizeof(struct generator));
+    if (gen == NULL)
+    {
+        fprintf(stderr, "failed to allocate memory in create_generator()\n");
+        exit(1);
+    }
     for (int i = 0; i < NUM_PIECES; i++)
     {
         gen->queue[i] = i;

@@ -4,7 +4,7 @@ static void load_offsets_I(int offsets_x[5], int offsets_y[5], RotationIndex cur
 
 const uint16_t tetrominoes[NUM_PIECES][4] = {
     // Shape I
-    {0x0f00, 0x4444, 0x00F0, 0x2222},
+    {0x0F00, 0x4444, 0x00F0, 0x2222},
 
     // Shape J
     {0x1700, 0x6220, 0x0740, 0x2230},

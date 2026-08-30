@@ -13,7 +13,7 @@ static void add_score(Game g, int num_rows_cleared);
 
 // rotation logic
 static void rotate(Game g, Rotation r);
-static bool test_potential_position(Game g, int x_offset, int y_offset, uint16_t bitmap);
+static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap);
 
 Generator gen;
 
@@ -214,15 +214,15 @@ static void rotate(Game g, Rotation r)
         new_rotation = (g->currRotation + 1) % 4;
     }
 
-    int offsets_x[5];
-    int offsets_y[5];
-    load_offsets(offsets_x, offsets_y, g->currRotation, new_rotation, g->curr_piece_type);
+    Vector2d offsets[5];
+    load_offsets(offsets, g->currRotation, new_rotation, g->curr_piece_type);
     for (int i = 0; i < 5; i++)
     {
-        if (test_potential_position(g, offsets_x[i], offsets_y[i], tetrominoes[g->curr_piece_type][new_rotation]))
+        
+        if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_rotation]))
         {
-            g->curr_piece_pos.x += offsets_x[i];
-            g->curr_piece_pos.y += offsets_y[i];
+            g->curr_piece_pos.x += offsets[i].x;
+            g->curr_piece_pos.y += offsets[i].y;
             g->currRotation = new_rotation;
             return;
         }
@@ -242,10 +242,10 @@ void rotate_right(Game g)
 }
 
 // This tests a new position to see if we can rotate there.
-static bool test_potential_position(Game g, int x_offset, int y_offset, uint16_t bitmap)
+static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap)
 {
-    int currTestPosX = g->curr_piece_pos.x + x_offset;
-    int currTestPosY = g->curr_piece_pos.y + y_offset;
+    int currTestPosX = g->curr_piece_pos.x + offset.x;
+    int currTestPosY = g->curr_piece_pos.y + offset.y;
     int currBitPos = 15;
     
     for (int i = currTestPosX; i < 4; i++) {

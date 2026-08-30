@@ -1,6 +1,7 @@
 #include "pieces.h"
+#include "game.h"
 
-static void load_offsets_I(int offsets_x[5], int offsets_y[5], RotationIndex curr_rotation, RotationIndex new_rotation);
+static void load_offsets_I(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation);
 
 const uint16_t tetrominoes[NUM_PIECES][4] = {
     // Shape I
@@ -31,24 +32,24 @@ typedef struct
 	int y;
 } Offset;
 
-void load_offsets(int offsets_x[5], int offsets_y[5], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt)
+void load_offsets(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt)
 {
 	// https://tetris.wiki/Tetris_Guideline
 
 	if (pt == TETROMINO_I)
 	{
-		load_offsets_I(offsets_x, offsets_y, curr_rotation, new_rotation);
+		load_offsets_I(offsets, curr_rotation, new_rotation);
 		return;
 	}
 
 	for (int i = 0; i < 5; i++)
 	{
-		offsets_x[i] = offsets[curr_rotation][new_rotation][i].x;
-		offsets_y[i] = offsets[curr_rotation][new_rotation][i].y;
+		offsets[i].x = CONST_OFFSETS[curr_rotation][new_rotation][i].x;
+		offsets[i].y = CONST_OFFSETS[curr_rotation][new_rotation][i].y;
 	}
 }
 
-static const Offset offsets[4][4][5] = {
+static const Offset CONST_OFFSETS[4][4][5] = {
 	[ROTATION_0][ROTATION_R] = {
 		{ 0,  0},
 		{-1,  0},
@@ -114,7 +115,7 @@ static const Offset offsets[4][4][5] = {
 	}
 };
 
-static const Offset offsets_I[4][4][5] = {
+static const Offset CONST_OFFSETS_I[4][4][5] = {
 	[ROTATION_0][ROTATION_R] = {
 		{ 0,  0},
 		{-2,  0},
@@ -180,11 +181,11 @@ static const Offset offsets_I[4][4][5] = {
 	}
 };
 
-static void load_offsets_I(int offsets_x[5], int offsets_y[5], RotationIndex curr_rotation, RotationIndex new_rotation)
+static void load_offsets_I(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation)
 {
 	for (int i = 0; i < 5; i++)
 	{
-		offsets_x[i] = offsets_I[curr_rotation][new_rotation][i].x;
-		offsets_y[i] = offsets_I[curr_rotation][new_rotation][i].y;
+		offsets[i].x = CONST_OFFSETS_I[curr_rotation][new_rotation][i].x;
+		offsets[i].y = CONST_OFFSETS_I[curr_rotation][new_rotation][i].y;
 	}
 }

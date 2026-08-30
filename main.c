@@ -227,7 +227,6 @@ static void rotate(Game g, Rotation r)
             return;
         }
     }
-    // test_potential_position(g, offsets_x[0], offsets_y[0], tetrominoes[g->curr_piece_type][new_rotation]);
 }
 
 // TODO: implement this

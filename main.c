@@ -11,6 +11,10 @@
 // Scoring Logic
 static void add_score(Game g, int num_rows_cleared);
 
+// rotation logic
+static void rotate(Game g, Rotation r);
+static bool test_potential_position(Game g, int x_offset, int y_offset, uint16_t bitmap);
+
 Generator gen;
 
 int main(void)
@@ -209,38 +213,33 @@ static void rotate(Game g, Rotation r)
     {
         new_rotation = (g->currRotation + 1) % 4;
     }
+
+    int offsets_x[5];
+    int offsets_y[5];
+    load_offsets(offsets_x, offsets_y, g->currRotation, new_rotation, g->curr_piece_type);
+    for (int i = 0; i < 5; i++)
+    {
+        if (test_potential_position(g, offsets_x[i], offsets_y[i], tetrominoes[g->curr_piece_type][new_rotation]))
+        {
+            g->curr_piece_pos.x += offsets_x[i];
+            g->curr_piece_pos.y += offsets_y[i];
+            g->currRotation = new_rotation;
+            return;
+        }
+    }
+    // test_potential_position(g, offsets_x[0], offsets_y[0], tetrominoes[g->curr_piece_type][new_rotation]);
 }
 
 // TODO: implement this
 void rotate_left(Game g)
 {
-    // find what new_rotation show be i.e. 1, 2, 3, 0
-    // initialise array of wallkick offsets (first one is 0,0)
-    // for each offset, check the 4x4 grid placed at that offset + the corrent piece position works
-        // load that bitmap into a separate 4x4 grid
-        // if it works update the position, rotation, and the actual piece grid
-        // return
-    int new_rotation = (g->currRotation + 1) % 4;
-    int offsets_x[5];
-    int offsets_y[5];
-    load_offsets(offsets_x, offsets_y, g->currRotation, new_rotation, g->curr_piece_type);
-    Color c = g->curr_piece_color;
-
-    uint16_t bitmap = tetrominoes[g->curr_piece_type][new_rotation];
-    
-
-    return;
+    rotate(g, ROTATION_LEFT);
 }
 
 // TODO: implement this
 void rotate_right(Game g)
 {
-    int new_rotation = (g->currRotation - 1) % 4;
-    Color c = (Color)g->curr_piece_color;
-
-    uint16_t bitmap = tetrominoes[g->curr_piece_type][new_rotation];
-
-    return;
+    rotate(g, ROTATION_RIGHT);
 }
 
 // This tests a new position to see if we can rotate there.

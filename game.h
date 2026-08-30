@@ -89,6 +89,5 @@ bool check_can_move(Game g, Direction d);
 // Rotation logic
 void rotate_left(Game g);
 void rotate_right(Game g);
-static bool test_potential_position(Game g, int x_offset, int y_offset, uint16_t bitmap);
 
 #endif

@@ -193,7 +193,7 @@ void load_piecetype(Game g, PieceType pt)
 
     g->curr_piece_pos.y = 0;
     g->curr_piece_pos.x = 3;
-    g->currRotation = 0;
+    g->curr_piece_rotation = 0;
 }
 
 void destroy_game(Game g)
@@ -207,23 +207,22 @@ static void rotate(Game g, Rotation r)
     int new_rotation;
     if (r == ROTATION_LEFT)
     {
-        new_rotation = (g->currRotation + 1) % 4;
+        new_rotation = (g->curr_piece_rotation + 1) % 4;
     }
     else if (r == ROTATION_RIGHT)
     {
-        new_rotation = (g->currRotation + 1) % 4;
+        new_rotation = (g->curr_piece_rotation + 1) % 4;
     }
 
     Vector2d offsets[5];
-    load_offsets(offsets, g->currRotation, new_rotation, g->curr_piece_type);
+    load_offsets(offsets, g->curr_piece_rotation, new_rotation, g->curr_piece_type);
     for (int i = 0; i < 5; i++)
     {
-        
         if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_rotation]))
         {
             g->curr_piece_pos.x += offsets[i].x;
             g->curr_piece_pos.y += offsets[i].y;
-            g->currRotation = new_rotation;
+            g->curr_piece_rotation = new_rotation;
             return;
         }
     }

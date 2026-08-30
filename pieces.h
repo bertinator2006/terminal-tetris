@@ -27,8 +27,7 @@ typedef enum
 
 extern const uint16_t tetrominoes[NUM_PIECES][4];
 
-void load_offsets(int offsets_x[5], int offsets_y[5], 
-    RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt);
+void load_offsets(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt);
 
 
 #endif

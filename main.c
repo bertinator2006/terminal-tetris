@@ -14,6 +14,7 @@ static void add_score(Game g, int num_rows_cleared);
 // rotation logic
 static void rotate(Game g, Rotation r);
 static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap);
+static Vector2d vector_add(Vector2d a, Vector2d b);
 
 Generator gen;
 
@@ -126,13 +127,8 @@ void move_right(Game g)
 
 bool check_can_move(Game g, Direction d) {
     // represented as {dy, dx}
-    int iter[4][2] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-
-    int dx = iter[d][1];
-    int dy = iter[d][0];
-
-    int new_piece_y = dy + g->curr_piece_pos.y;
-    int new_piece_x = dx + g->curr_piece_pos.x;
+    Vector2d iter[4] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    Vector2d new_piece_pos = vector_add(iter[d], g->curr_piece_pos);
 
     // Look through all the pieces
     for (int i = 0; i < MAX_PIECE_HEIGHT; i++) {
@@ -143,19 +139,20 @@ bool check_can_move(Game g, Direction d) {
             }
 
             // Now, check if we were to move the tile if it will be in range
-            int final_x = new_piece_x + j;
-            int final_y = new_piece_y + i;
-            if (final_x < 0 || final_x > GRID_WIDTH - 1) {
+            Vector2d to_add;
+            to_add.x = j;
+            to_add.y = i;
+            Vector2d final_pos = vector_add(new_piece_pos, to_add);
+            if (final_pos.x < 0 || final_pos.x > GRID_WIDTH - 1) {
                 return false;
-            } else if (final_y < 0 || final_y > GRID_HEIGHT - 1) {
+            } else if (final_pos.y < 0 || final_pos.y > GRID_HEIGHT - 1) {
                 return false;
             }
 
             // Check if the piece will collide into another piece
-            if (g->grid[final_y][final_x] != COLOR_NONE) {
+            if (g->grid[final_pos.y][final_pos.x] != COLOR_NONE) {
                 return false;
             }
-
         }
     }
 
@@ -193,7 +190,7 @@ void load_piecetype(Game g, PieceType pt)
 
     g->curr_piece_pos.y = 0;
     g->curr_piece_pos.x = 3;
-    g->curr_piece_rotation = 0;
+    g->curr_piece_direction = 0;
 }
 
 void destroy_game(Game g)
@@ -204,25 +201,25 @@ void destroy_game(Game g)
 
 static void rotate(Game g, Rotation r)
 {
-    int new_rotation;
+    int new_direction;
     if (r == ROTATION_LEFT)
     {
-        new_rotation = (g->curr_piece_rotation + 1) % 4;
+        new_direction = (g->curr_piece_direction + 1) % 4;
     }
     else if (r == ROTATION_RIGHT)
     {
-        new_rotation = (g->curr_piece_rotation + 1) % 4;
+        new_direction = (g->curr_piece_direction + 1) % 4;
     }
 
     Vector2d offsets[5];
-    load_offsets(offsets, g->curr_piece_rotation, new_rotation, g->curr_piece_type);
+    load_offsets(offsets, g->curr_piece_direction, new_direction, g->curr_piece_type);
     for (int i = 0; i < 5; i++)
     {
-        if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_rotation]))
+        if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_direction]))
         {
             g->curr_piece_pos.x += offsets[i].x;
             g->curr_piece_pos.y += offsets[i].y;
-            g->curr_piece_rotation = new_rotation;
+            g->curr_piece_direction = new_direction;
             return;
         }
     }
@@ -319,4 +316,11 @@ void clear_rows(Game g)
 static void add_score(Game g, int num_rows_cleared) 
 {
     return;
+}
+
+static Vector2d vector_add(Vector2d a, Vector2d b)
+{
+    a.x += b.x;
+    a.y += b.y;
+    return a;
 }

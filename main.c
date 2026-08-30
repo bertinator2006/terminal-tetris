@@ -126,7 +126,6 @@ void move_right(Game g)
 }
 
 bool check_can_move(Game g, Direction d) {
-    // represented as {dy, dx}
     Vector2d iter[4] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     Vector2d new_piece_pos = vector_add(iter[d], g->curr_piece_pos);
 
@@ -195,7 +194,6 @@ void load_piecetype(Game g, PieceType pt)
 
 void destroy_game(Game g)
 {
-
     free(g);
 }
 
@@ -225,27 +223,30 @@ static void rotate(Game g, Rotation r)
     }
 }
 
-// TODO: implement this
+// Rotates the curr_piece anticlockwise
+// Replaces the bitmap, and the curr piece grid
+// uses Tetris SRS system for rotation
 void rotate_left(Game g)
 {
     rotate(g, ROTATION_LEFT);
 }
 
-// TODO: implement this
+// Rotates the curr_piece clockwise
+// Replaces the bitmap, and the curr piece grid
+// uses Tetris SRS system for rotation
 void rotate_right(Game g)
 {
     rotate(g, ROTATION_RIGHT);
 }
 
-// This tests a new position to see if we can rotate there.
+// Tests a new position to see if we can rotate there.
 static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap)
 {
-    int currTestPosX = g->curr_piece_pos.x + offset.x;
-    int currTestPosY = g->curr_piece_pos.y + offset.y;
+    Vector2d test_pos = vector_add(g->curr_piece_pos, offset);
     int currBitPos = 15;
     
-    for (int i = currTestPosX; i < 4; i++) {
-        for (int j = currTestPosY; j < 4; j++) {
+    for (int i = test_pos.x; i < 4; i++) {
+        for (int j = test_pos.y; j < 4; j++) {
             // If there is something in where we want to go, we cant rotate there
             int currBit = bitmap & (0b1 << currBitPos);
             currBitPos--;

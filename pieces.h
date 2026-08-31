@@ -2,7 +2,7 @@
 #define PIECES_H
 
 #include <stdint.h>
-#include "game.h"
+#include "vector.h"
 
 #define NUM_PIECES 7
 

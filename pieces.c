@@ -32,23 +32,6 @@ typedef struct
 	int y;
 } Offset;
 
-void load_offsets(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt)
-{
-	// https://tetris.wiki/Tetris_Guideline
-
-	if (pt == TETROMINO_I)
-	{
-		load_offsets_I(offsets, curr_rotation, new_rotation);
-		return;
-	}
-
-	for (int i = 0; i < 5; i++)
-	{
-		offsets[i].x = CONST_OFFSETS[curr_rotation][new_rotation][i].x;
-		offsets[i].y = CONST_OFFSETS[curr_rotation][new_rotation][i].y;
-	}
-}
-
 static const Offset CONST_OFFSETS[4][4][5] = {
 	[ROTATION_0][ROTATION_R] = {
 		{ 0,  0},
@@ -180,6 +163,23 @@ static const Offset CONST_OFFSETS_I[4][4][5] = {
 		{ 2, -1}
 	}
 };
+
+void load_offsets(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt)
+{
+	// https://tetris.wiki/Tetris_Guideline
+
+	if (pt == TETROMINO_I)
+	{
+		load_offsets_I(offsets, curr_rotation, new_rotation);
+		return;
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		offsets[i].x = CONST_OFFSETS[curr_rotation][new_rotation][i].x;
+		offsets[i].y = CONST_OFFSETS[curr_rotation][new_rotation][i].y;
+	}
+}
 
 static void load_offsets_I(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation)
 {

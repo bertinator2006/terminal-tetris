@@ -5,6 +5,7 @@
 #include "pieces.h"
 #include "display.h"
 #include "generation.h"
+#include "vector.h"
 // https://tetris.wiki/Tetris_Guideline
 // https://tetris.wiki/images/6/67/TGM_Legend_Tetra_SRS.png
 
@@ -14,7 +15,6 @@ static void add_score(Game g, int num_rows_cleared);
 // rotation logic
 static void rotate(Game g, Rotation r);
 static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap);
-static Vector2d vector_add(Vector2d a, Vector2d b);
 static void load_piecegrid(Game g, PieceType pt, Direction d);
 
 Generator gen;
@@ -330,9 +330,3 @@ static void add_score(Game g, int num_rows_cleared)
     return;
 }
 
-static Vector2d vector_add(Vector2d a, Vector2d b)
-{
-    a.x += b.x;
-    a.y += b.y;
-    return a;
-}

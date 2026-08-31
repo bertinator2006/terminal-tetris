@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "pieces.h"
+#include "vector.h"
 
 #define GRID_HEIGHT 23
 #define VISIBLE_GRID_HEIGHT 20
@@ -16,10 +17,6 @@ typedef enum {
     DIRECTION_UP,
 } Direction;
 
-typedef struct vector2d {
-    int x;
-    int y;
-} Vector2d;
 
 typedef enum
 {

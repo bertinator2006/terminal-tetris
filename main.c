@@ -159,7 +159,8 @@ bool check_can_move(Game g, Direction d) {
     return true;
 }
 
-// Loads piece into to current
+// Loads piece into to current piece grid,
+// sets the current piece type, color, direction, and position to default
 void load_piecetype(Game g, PieceType pt)
 {
     Color c = (Color)pt;

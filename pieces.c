@@ -1,5 +1,6 @@
 #include "pieces.h"
 #include "game.h"
+#include "vector.h"
 
 static void load_offsets_I(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation);
 
@@ -26,13 +27,7 @@ const uint16_t tetrominoes[NUM_PIECES][4] = {
     {0x2700, 0x2620, 0x0720, 0x2320}
 };
 
-typedef struct
-{
-	int x;
-	int y;
-} Offset;
-
-static const Offset CONST_OFFSETS[4][4][5] = {
+static const Vector2d CONST_OFFSETS[4][4][5] = {
 	[ROTATION_0][ROTATION_R] = {
 		{ 0,  0},
 		{-1,  0},
@@ -98,7 +93,7 @@ static const Offset CONST_OFFSETS[4][4][5] = {
 	}
 };
 
-static const Offset CONST_OFFSETS_I[4][4][5] = {
+static const Vector2d CONST_OFFSETS_I[4][4][5] = {
 	[ROTATION_0][ROTATION_R] = {
 		{ 0,  0},
 		{-2,  0},

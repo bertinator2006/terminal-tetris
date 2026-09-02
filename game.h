@@ -56,7 +56,7 @@ struct game {
     Vector2d curr_piece_pos;    
     Color curr_piece_color;
     Color curr_piece_grid[MAX_PIECE_HEIGHT][MAX_PIECE_WIDTH];
-    int curr_piece_direction;
+    RotationIndex curr_piece_rotation_index;
 
     // Scoring logic
     int score;

@@ -44,6 +44,8 @@ int main(void)
             case CMD_NONE:      piece_fall(game);   break;
             default:            break;
         }
+        // game->curr_piece_pos.y = 4;
+        // game->curr_piece_pos.x = 3;
     }
 
     return 0;
@@ -127,7 +129,7 @@ void move_right(Game g)
 }
 
 bool check_can_move(Game g, Direction d) {
-    Vector2d iter[4] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    Vector2d iter[4] = { {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     Vector2d new_piece_pos = vector_add(iter[d], g->curr_piece_pos);
 
     // Look through all the pieces
@@ -172,7 +174,7 @@ void load_piecetype(Game g, PieceType pt)
 
     g->curr_piece_pos.y = 0;
     g->curr_piece_pos.x = 3;
-    g->curr_piece_direction = 0;
+    g->curr_piece_rotation_index = ROTATION_0;
 }
 
 void destroy_game(Game g)
@@ -210,26 +212,26 @@ static void load_piecegrid(Game g, PieceType pt, Direction d)
 
 static void rotate(Game g, Rotation r)
 {
-    int new_direction;
+    int new_rotation_index;
     if (r == ROTATION_LEFT)
     {
-        new_direction = (g->curr_piece_direction + 1) % 4;
+        new_rotation_index = (g->curr_piece_rotation_index + 1) % 4;
     }
     else if (r == ROTATION_RIGHT)
     {
-        new_direction = (g->curr_piece_direction + 1) % 4;
+        new_rotation_index = (g->curr_piece_rotation_index + 1) % 4;
     }
 
     Vector2d offsets[5];
-    load_offsets(offsets, g->curr_piece_direction, new_direction, g->curr_piece_type);
+    load_offsets(offsets, g->curr_piece_rotation_index, new_rotation_index, g->curr_piece_type);
     for (int i = 0; i < 5; i++)
     {
-        if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_direction]))
+        if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_rotation_index]))
         {
             g->curr_piece_pos.x += offsets[i].x;
             g->curr_piece_pos.y += offsets[i].y;
-            g->curr_piece_direction = new_direction;
-            
+            g->curr_piece_rotation_index = new_rotation_index;
+            load_piecegrid(g, g->curr_piece_type, new_rotation_index);
             return;
         }
     }

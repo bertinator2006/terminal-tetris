@@ -23,7 +23,7 @@ Command get_command(void)
         case 'd':    return CMD_RIGHT;
         case 'z':    return CMD_ROTATE_L;
         case 'x':    return CMD_ROTATE_R;
-        case ' ':    return CMD_HARD_DROP;
+        case 'p':    return CMD_HARD_DROP;
         default:     return CMD_NONE;
     }
 }

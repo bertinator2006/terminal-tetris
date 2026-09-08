@@ -69,23 +69,18 @@ void display_grid(Game g) {
     }
 }
 
-static void print_block(Color c) {
-    if (c == COLOR_LIGHTBLUE) {
-        printf("\033[36m██\033[0m");
-    } else if (c == COLOR_DARKBLUE) {
-        printf("\033[34m██\033[0m");
-    } else if (c == COLOR_ORANGE) {
-        printf("\033[38;5;208m██\033[0m");
-    } else if (c == COLOR_YELLOW) {
-        printf("\033[33m██\033[0m");
-    } else if (c == COLOR_GREEN) {
-        printf("\033[32m██\033[0m");
-    } else if (c == COLOR_RED) {
-        printf("\033[31m██\033[0m");
-    } else if (c == COLOR_MAGENTA) {
-        printf("\033[35m██\033[0m");
-    } else {
-        printf("\033[30m██\033[0m");
+static void print_block(Color c)
+{
+    switch (c)
+    {
+        case COLOR_LIGHTBLUE:    printf("\033[36m██\033[0m");        break;
+        case COLOR_DARKBLUE:     printf("\033[34m██\033[0m");        break;
+        case COLOR_ORANGE:       printf("\033[38;5;208m██\033[0m");  break;
+        case COLOR_YELLOW:       printf("\033[33m██\033[0m");        break;
+        case COLOR_GREEN:        printf("\033[32m██\033[0m");        break;
+        case COLOR_RED:          printf("\033[31m██\033[0m");        break;
+        case COLOR_MAGENTA:      printf("\033[35m██\033[0m");        break;
+        default:                 printf("\033[30m██\033[0m");        break;
     }
 
     return;

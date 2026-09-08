@@ -16,6 +16,8 @@ static void add_score(Game g, int num_rows_cleared);
 static void rotate(Game g, Rotation r);
 static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap);
 static void load_piecegrid(Game g, PieceType pt, Direction d);
+static void delete_row(Game g, int row);
+void clear_rows(Game g);
 
 Generator gen;
 

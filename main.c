@@ -104,6 +104,7 @@ int piece_fall(Game g)
             g->grid[final_y][final_x] = g->curr_piece_color;
         }
     }
+    clear_rows(g);
     PieceType piece_t = gen_random_piecetype(gen);
     load_piecetype(g, piece_t);
 
@@ -280,51 +281,41 @@ void hard_drop(Game g)
     return;
 }
 
+static void delete_row(Game g, int row)
+{
+    for (int i = row; i > 0; i--)
+    {
+        for (int x = 0; x < GRID_WIDTH; x++)
+        {
+            g->grid[i][x] = g->grid[i - 1][x];
+        }
+    }
+}
+
+static bool grid_row_full(Game g, int row)
+{
+    for (int x = 0; x < GRID_WIDTH; x++)
+    {
+        if (g->grid[row][x] == COLOR_NONE)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Clears fully finished rows, and drops things above the rows
 void clear_rows(Game g)
 {
-    bool mark_rows[GRID_HEIGHT] = {true};
-
-    int currRow = GRID_HEIGHT;
-    int maxRow = GRID_HEIGHT - VISIBLE_GRID_HEIGHT;
-
-    // Mark which rows need to be deleted
-    for (int checkRow = currRow; checkRow >= maxRow; checkRow--) {
-        mark_rows[currRow] = true;
-        for (int i = 0 ; i < GRID_WIDTH; i++) {
-            if (g->grid[checkRow][i] == COLOR_NONE) {
-                mark_rows[currRow] = false;
-            }
-        }
-    }
-
-    int shiftDown = 0;
-    // Start at the bottom, and see which rows we need to delete
-    for (int i = GRID_HEIGHT; i >= maxRow; i--) {
-        // We need to delete this row
-        if (mark_rows[i] == false) {
-            // Wipe it clean
-            for (int j = 0; j < GRID_WIDTH; j++) {
-                g->grid[i][j] = COLOR_NONE;
-            }
-
-            // Mark the next rows to be shifted down
-            shiftDown++;
+    for (int row = 0; row < GRID_HEIGHT; row++)
+    {
+        if (grid_row_full(g, row))
+        {
+            delete_row(g, row);
+            clear_rows(g);
             return;
-
-        // A row(s) below have been deleted: must shift this guy down.
-        } else if (shiftDown != 0) {
-            for (int j = 0; j < GRID_WIDTH; j++) {
-                g->grid[i + shiftDown][j] = g->grid[i][j];
-            }
-            
         }
     }
-
-    // Add points based on how many rows we shifted it down by
-    add_score(g, shiftDown);
-
-    return;
 }
 
 // Adds score based on the amount of rows cleared 

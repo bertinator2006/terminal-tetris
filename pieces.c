@@ -169,7 +169,7 @@ void load_offsets(Vector2d offsets[NUM_OFFSETS], RotationIndex curr_rotation, Ro
 		return;
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < NUM_OFFSETS; i++)
 	{
 		offsets[i].x = CONST_OFFSETS[curr_rotation][new_rotation][i].x;
 		offsets[i].y = CONST_OFFSETS[curr_rotation][new_rotation][i].y;
@@ -178,7 +178,7 @@ void load_offsets(Vector2d offsets[NUM_OFFSETS], RotationIndex curr_rotation, Ro
 
 static void load_offsets_I(Vector2d offsets[NUM_OFFSETS], RotationIndex curr_rotation, RotationIndex new_rotation)
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < NUM_OFFSETS; i++)
 	{
 		offsets[i].x = CONST_OFFSETS_I[curr_rotation][new_rotation][i].x;
 		offsets[i].y = CONST_OFFSETS_I[curr_rotation][new_rotation][i].y;

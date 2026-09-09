@@ -223,7 +223,7 @@ static void rotate(Game g, Rotation r)
         new_rotation_index = (g->curr_piece_rotation_index + 3) % 4;
     }
 
-    Vector2d offsets[5];
+    Vector2d offsets[NUM_OFFSETS];
     load_offsets(offsets, g->curr_piece_rotation_index, new_rotation_index, g->curr_piece_type);
     for (int i = 0; i < NUM_OFFSETS; i++)
     {

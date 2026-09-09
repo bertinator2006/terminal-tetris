@@ -220,7 +220,7 @@ static void rotate(Game g, Rotation r)
     }
     else if (r == ROTATION_RIGHT)
     {
-        new_rotation_index = (g->curr_piece_rotation_index + 1) % 4;
+        new_rotation_index = (g->curr_piece_rotation_index + 3) % 4;
     }
 
     Vector2d offsets[5];

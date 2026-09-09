@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "vector.h"
 
+#define NUM_OFFSETS 5
 #define NUM_PIECES 7
 
 typedef enum
@@ -28,7 +29,7 @@ typedef enum
 
 extern const uint16_t tetrominoes[NUM_PIECES][4];
 
-void load_offsets(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt);
+void load_offsets(Vector2d offsets[NUM_OFFSETS], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt);
 
 
 #endif

@@ -2,7 +2,7 @@
 #include "game.h"
 #include "vector.h"
 
-static void load_offsets_I(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation);
+static void load_offsets_I(Vector2d offsets[NUM_OFFSETS], RotationIndex curr_rotation, RotationIndex new_rotation);
 
 const uint16_t tetrominoes[NUM_PIECES][4] = {
     // Shape I
@@ -27,7 +27,7 @@ const uint16_t tetrominoes[NUM_PIECES][4] = {
     {0x2700, 0x2620, 0x0720, 0x2320}
 };
 
-static const Vector2d CONST_OFFSETS[4][4][5] = {
+static const Vector2d CONST_OFFSETS[4][4][NUM_OFFSETS] = {
 	[ROTATION_0][ROTATION_R] = {
 		{ 0,  0},
 		{-1,  0},
@@ -93,7 +93,7 @@ static const Vector2d CONST_OFFSETS[4][4][5] = {
 	}
 };
 
-static const Vector2d CONST_OFFSETS_I[4][4][5] = {
+static const Vector2d CONST_OFFSETS_I[4][4][NUM_OFFSETS] = {
 	[ROTATION_0][ROTATION_R] = {
 		{ 0,  0},
 		{-2,  0},
@@ -159,7 +159,7 @@ static const Vector2d CONST_OFFSETS_I[4][4][5] = {
 	}
 };
 
-void load_offsets(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt)
+void load_offsets(Vector2d offsets[NUM_OFFSETS], RotationIndex curr_rotation, RotationIndex new_rotation, PieceType pt)
 {
 	// https://tetris.wiki/Tetris_Guideline
 
@@ -176,7 +176,7 @@ void load_offsets(Vector2d offsets[5], RotationIndex curr_rotation, RotationInde
 	}
 }
 
-static void load_offsets_I(Vector2d offsets[5], RotationIndex curr_rotation, RotationIndex new_rotation)
+static void load_offsets_I(Vector2d offsets[NUM_OFFSETS], RotationIndex curr_rotation, RotationIndex new_rotation)
 {
 	for (int i = 0; i < 5; i++)
 	{

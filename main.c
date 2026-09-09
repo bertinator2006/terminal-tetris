@@ -225,7 +225,7 @@ static void rotate(Game g, Rotation r)
 
     Vector2d offsets[5];
     load_offsets(offsets, g->curr_piece_rotation_index, new_rotation_index, g->curr_piece_type);
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < NUM_OFFSETS; i++)
     {
         if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_rotation_index]))
         {

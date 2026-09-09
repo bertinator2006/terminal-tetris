@@ -46,8 +46,6 @@ int main(void)
             case CMD_NONE:      piece_fall(game);   break;
             default:            break;
         }
-        // game->curr_piece_pos.y = 4;
-        // game->curr_piece_pos.x = 3;
     }
 
     return 0;

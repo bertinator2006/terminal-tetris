@@ -213,7 +213,7 @@ static void load_piecegrid(Game g, PieceType pt, Direction d)
 
 static void rotate(Game g, Rotation r)
 {
-    int new_rotation_index;
+    RotationIndex new_rotation_index;
     if (r == ROTATION_LEFT)
     {
         new_rotation_index = (g->curr_piece_rotation_index + 1) % 4;

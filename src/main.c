@@ -211,6 +211,11 @@ static void load_piecegrid(Game g, PieceType pt, RotationIndex r)
     }
 }
 
+// static void temp(Vector2d v)
+// {
+//     printf("x = %i : y = %i\n", v.x, v.y);
+// }
+
 static void rotate(Game g, Rotation r)
 {
     RotationIndex new_rotation_index;
@@ -225,9 +230,11 @@ static void rotate(Game g, Rotation r)
 
     Vector2d offsets[NUM_OFFSETS];
     load_offsets(offsets, g->curr_piece_rotation_index, new_rotation_index, g->curr_piece_type);
+    // printf("cur_pos: ");temp(g->curr_piece_pos);
+
     for (int i = 0; i < NUM_OFFSETS; i++)
     {
-        printf("Checked i = %i\n");
+        // temp(offsets[i]);
         if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_rotation_index]))
         {
             g->curr_piece_pos.x += offsets[i].x;

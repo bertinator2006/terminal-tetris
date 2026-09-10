@@ -227,6 +227,7 @@ static void rotate(Game g, Rotation r)
     load_offsets(offsets, g->curr_piece_rotation_index, new_rotation_index, g->curr_piece_type);
     for (int i = 0; i < NUM_OFFSETS; i++)
     {
+        printf("Checked i = %i\n");
         if (test_potential_position(g, offsets[i], tetrominoes[g->curr_piece_type][new_rotation_index]))
         {
             g->curr_piece_pos.x += offsets[i].x;
@@ -254,11 +255,6 @@ void rotate_right(Game g)
     rotate(g, ROTATION_RIGHT);
 }
 
-static void temp(int i)
-{
-    printf(" %i", i);
-}
-
 // Tests a new position to see if we can rotate there.
 static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap)
 {
@@ -274,8 +270,6 @@ static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap)
             v.y = y;
             v = vector_add(v, test_pos);
             bool i = bitmap & mask;
-            if (i) printf("Testing with x = %i, and y = %i\n", v.x, v.y);
-
             bool available = (g->grid[v.y][v.x] == COLOR_NONE);
             bool x_bounds = (v.x >= 0) && (v.x < GRID_WIDTH);
             bool y_bounds = (v.y >= 0) && (v.y < GRID_HEIGHT);

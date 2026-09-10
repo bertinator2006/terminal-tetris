@@ -1,5 +1,8 @@
+SRC=src/
+SRCFILES=$(SRC)/main.c $(SRC)/generation.c $(SRC)/vector.c $(SRC)/pieces.c $(SRC)/display.c
+
 all:
-	gcc main.c generation.c pieces.c display.c vector.c -o tetris
+	gcc $(SRCFILES) -o tetris
 
 run:
 	./tetris

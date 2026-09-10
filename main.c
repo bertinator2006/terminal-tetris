@@ -15,7 +15,7 @@ static void add_score(Game g, int num_rows_cleared);
 // rotation logic
 static void rotate(Game g, Rotation r);
 static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap);
-static void load_piecegrid(Game g, PieceType pt, Direction d);
+static void load_piecegrid(Game g, PieceType pt, RotationIndex r);
 static void delete_row(Game g, int row);
 void clear_rows(Game g);
 
@@ -171,7 +171,7 @@ void load_piecetype(Game g, PieceType pt)
     g->curr_piece_type = pt;
     g->curr_piece_color = c;
 
-    load_piecegrid(g, pt, 0);
+    load_piecegrid(g, pt, ROTATION_0);
 
     g->curr_piece_pos.y = 0;
     g->curr_piece_pos.x = 3;
@@ -185,11 +185,11 @@ void destroy_game(Game g)
 
 // changes the curr piece grid to match the given piecetype
 // not tied to any specific action
-static void load_piecegrid(Game g, PieceType pt, Direction d)
+static void load_piecegrid(Game g, PieceType pt, RotationIndex r)
 {
     Color c = (Color)pt;
 
-    uint16_t bitmap = tetrominoes[pt][d];
+    uint16_t bitmap = tetrominoes[pt][r];
 
     uint16_t mask = 0x8000;
 

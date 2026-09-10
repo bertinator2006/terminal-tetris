@@ -254,22 +254,40 @@ void rotate_right(Game g)
     rotate(g, ROTATION_RIGHT);
 }
 
+static void temp(int i)
+{
+    printf(" %i", i);
+}
+
 // Tests a new position to see if we can rotate there.
 static bool test_potential_position(Game g, Vector2d offset, uint16_t bitmap)
 {
     Vector2d test_pos = vector_add(g->curr_piece_pos, offset);
-    int currBitPos = 15;
-    
-    for (int i = test_pos.x; i < 4; i++) {
-        for (int j = test_pos.y; j < 4; j++) {
-            // If there is something in where we want to go, we cant rotate there
-            int currBit = bitmap & (0b1 << currBitPos);
-            currBitPos--;
-            if (currBit == 1 && g->grid[i][j] != COLOR_NONE) {
+    uint16_t mask = 0x8000;
+
+    Vector2d v;
+    for (int y = 0; y < 4; y++)
+    {
+        for (int x = 0; x < 4; x++)
+        {
+            v.x = x;
+            v.y = y;
+            v = vector_add(v, test_pos);
+            bool i = bitmap & mask;
+            if (i) printf("Testing with x = %i, and y = %i\n", v.x, v.y);
+
+            bool available = (g->grid[v.y][v.x] == COLOR_NONE);
+            bool x_bounds = (v.x >= 0) && (v.x < GRID_WIDTH);
+            bool y_bounds = (v.y >= 0) && (v.y < GRID_HEIGHT);
+            bool within_bounds = x_bounds && y_bounds;
+            if (i && (!available || !within_bounds))
+            {
                 return false;
             }
+            mask >>= 1;
         }
     }
+
     return true;
 }
 

@@ -1,8 +1,12 @@
-SRC=src/
-SRCFILES=$(SRC)/main.c $(SRC)/generation.c $(SRC)/vector.c $(SRC)/pieces.c $(SRC)/display.c
+SRC = $(wildcard src/*.c)
+NEW_SRC = $(wildcard src_new/*.c)
 
-all:
-	gcc $(SRCFILES) -o tetris
+tetris:
+	gcc $(SRC) -o tetris
+
+new:
+	gcc $(NEW_SRC) -o tetris
+
 
 run:
 	./tetris

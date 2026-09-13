@@ -69,7 +69,7 @@ typedef struct game *Game;
 Game create_game(void);
 void destroy_game(Game g);
 
-// Display and Inputg
+// Display and Input
 void display_grid(Game g);
 
 // Piece falling logic

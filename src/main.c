@@ -51,6 +51,12 @@ int main(void)
     return 0;
 }
 
+// TODO
+void next_frame(Game g)
+{
+    piece_fall(g);
+}
+
 // returns Game
 // initialises grid to 0 and curr_piece_type to NULL
 Game create_game(void)

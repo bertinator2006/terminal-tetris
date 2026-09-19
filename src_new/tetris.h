@@ -1,16 +1,23 @@
 #ifndef TETRIS_H
 #define TETRIS_H
 
+#include <stdint.h>
+
+#define TETRIS_GRID_HEIGHT 20
+#define TETRIS_GRID_WIDTH 10
+
 typedef struct game *TETRIS_Game;
-typedef uint16_t TETRIS_Row;
 typedef uint16_t TETRIS_PieceBitmap;
 
+typedef struct {
+    uint8_t cells[TETRIS_GRID_HEIGHT * TETRIS_GIRD_WIDTH];
+} TETRIS_Grid;
 // Initialiser
 Game TETRIS_create_game(void);
 void TETRIS_destroy_game(Game g);
 
 // Accessing board information
-const TETRIS_Row *TETRIS_get_grid(Game g);
+TETRIS_Grid TETRIS_get_grid(Game g);
 TETRIS_PieceBitmap TETRIS_get_held_piece(Game g);
 int TETRIS_get_score(Game g);
 
